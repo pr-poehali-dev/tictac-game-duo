@@ -26,8 +26,11 @@ const Index = () => {
   const [winningLine, setWinningLine] = useState<number[]>([]);
   const [stats, setStats] = useState<GameStats>({ star: 0, moon: 0, draws: 0 });
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(true);
 
   const playSound = (type: 'move' | 'win' | 'draw') => {
+    if (!soundEnabled) return;
+
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
@@ -206,10 +209,20 @@ const Index = () => {
                     </span>
                     <span>Ход: {getCurrentPlayerName()}</span>
                   </CardTitle>
-                  <Button onClick={changeNames} variant="outline" size="sm" className="text-base sm:text-sm h-10 sm:h-9">
-                    <Icon name="Settings" className="mr-2" size={18} />
-                    Сменить
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => setSoundEnabled(!soundEnabled)} 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-base sm:text-sm h-10 sm:h-9"
+                    >
+                      <Icon name={soundEnabled ? "Volume2" : "VolumeX"} size={18} />
+                    </Button>
+                    <Button onClick={changeNames} variant="outline" size="sm" className="text-base sm:text-sm h-10 sm:h-9">
+                      <Icon name="Settings" className="mr-2" size={18} />
+                      Сменить
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>
