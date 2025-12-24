@@ -27,6 +27,44 @@ const Index = () => {
   const [stats, setStats] = useState<GameStats>({ star: 0, moon: 0, draws: 0 });
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
 
+  const playSound = (type: 'move' | 'win' | 'draw') => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    if (type === 'move') {
+      oscillator.frequency.setValueAtTime(520, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(720, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } else if (type === 'win') {
+      const frequencies = [523.25, 659.25, 783.99];
+      frequencies.forEach((freq, i) => {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+        osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
+        gain.gain.setValueAtTime(0.3, audioContext.currentTime + i * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.3);
+        osc.start(audioContext.currentTime + i * 0.15);
+        osc.stop(audioContext.currentTime + i * 0.15 + 0.3);
+      });
+    } else if (type === 'draw') {
+      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(220, audioContext.currentTime + 0.3);
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+    }
+  };
+
   const winningCombinations = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
     [0, 3, 6], [1, 4, 7], [2, 5, 8],
@@ -52,12 +90,18 @@ const Index = () => {
   const handleCellClick = (index: number) => {
     if (board[index] || winner) return;
 
+    playSound('move');
+
     const newBoard = [...board];
     newBoard[index] = currentPlayer;
     setBoard(newBoard);
 
     const gameWinner = checkWinner(newBoard);
     if (gameWinner) {
+      setTimeout(() => {
+        playSound(gameWinner === 'draw' ? 'draw' : 'win');
+      }, 200);
+      
       setWinner(gameWinner);
       setShowWinnerDialog(true);
       
