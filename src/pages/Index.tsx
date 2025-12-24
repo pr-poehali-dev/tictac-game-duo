@@ -27,6 +27,10 @@ const Index = () => {
   const [stats, setStats] = useState<GameStats>({ star: 0, moon: 0, draws: 0 });
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [player1Emoji, setPlayer1Emoji] = useState('⭐');
+  const [player2Emoji, setPlayer2Emoji] = useState('🌙');
+
+  const emojiOptions = ['⭐', '🌙', '🔥', '💎', '🎯', '⚡', '🌈', '🦄', '🐉', '👑', '🎮', '🚀', '💫', '🌟', '✨', '🎨', '🎭', '🎪', '🎲', '🏆'];
 
   const playSound = (type: 'move' | 'win' | 'draw') => {
     if (!soundEnabled) return;
@@ -138,7 +142,7 @@ const Index = () => {
     resetGame();
   };
 
-  const getPlayerSymbol = (player: Player) => player === 'star' ? '⭐' : '🌙';
+  const getPlayerSymbol = (player: Player) => player === 'star' ? player1Emoji : player2Emoji;
   const getCurrentPlayerName = () => currentPlayer === 'star' ? playerStarName : playerMoonName;
 
   if (!gameStarted) {
@@ -146,16 +150,16 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-background via-background to-purple-950/20">
         <Card className="w-full max-w-lg animate-fade-in border-2 border-primary/20 bg-card/95 backdrop-blur">
           <CardHeader className="text-center space-y-4 sm:space-y-6">
-            <div className="text-7xl sm:text-8xl mb-4 animate-bounce-in">⭐🌙</div>
+            <div className="text-7xl sm:text-8xl mb-4 animate-bounce-in">{player1Emoji}{player2Emoji}</div>
             <CardTitle className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Крестики-нолики
             </CardTitle>
-            <CardDescription className="text-xl sm:text-2xl">Введите имена игроков</CardDescription>
+            <CardDescription className="text-xl sm:text-2xl">Выберите эмодзи и введите имена</CardDescription>
           </CardHeader>
           <CardContent className="space-y-8">
             <div className="space-y-3">
               <label className="text-lg sm:text-xl font-semibold flex items-center gap-3">
-                <span className="text-3xl sm:text-4xl">⭐</span> Игрок 1
+                <span className="text-3xl sm:text-4xl">{player1Emoji}</span> Игрок 1
               </label>
               <Input
                 value={playerStarName}
@@ -163,10 +167,23 @@ const Index = () => {
                 placeholder="Имя первого игрока"
                 className="text-xl sm:text-2xl h-14 sm:h-16 border-primary/30 focus:border-primary"
               />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {emojiOptions.map((emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => setPlayer1Emoji(emoji)}
+                    className={`text-3xl sm:text-4xl p-2 rounded-lg transition-all hover:scale-110 ${
+                      player1Emoji === emoji ? 'bg-primary/30 ring-2 ring-primary' : 'bg-muted/50 hover:bg-muted'
+                    }`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="space-y-3">
               <label className="text-lg sm:text-xl font-semibold flex items-center gap-3">
-                <span className="text-3xl sm:text-4xl">🌙</span> Игрок 2
+                <span className="text-3xl sm:text-4xl">{player2Emoji}</span> Игрок 2
               </label>
               <Input
                 value={playerMoonName}
@@ -174,6 +191,19 @@ const Index = () => {
                 placeholder="Имя второго игрока"
                 className="text-xl sm:text-2xl h-14 sm:h-16 border-secondary/30 focus:border-secondary"
               />
+              <div className="flex flex-wrap gap-2 mt-3">
+                {emojiOptions.map((emoji) => (
+                  <button
+                    key={emoji}
+                    onClick={() => setPlayer2Emoji(emoji)}
+                    className={`text-3xl sm:text-4xl p-2 rounded-lg transition-all hover:scale-110 ${
+                      player2Emoji === emoji ? 'bg-secondary/30 ring-2 ring-secondary' : 'bg-muted/50 hover:bg-muted'
+                    }`}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
             </div>
             <Button 
               onClick={startNewGame} 
@@ -195,7 +225,7 @@ const Index = () => {
           <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Крестики-нолики
           </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground">⭐ {playerStarName} vs {playerMoonName} 🌙</p>
+          <p className="text-lg sm:text-xl text-muted-foreground">{player1Emoji} {playerStarName} vs {playerMoonName} {player2Emoji}</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
@@ -268,7 +298,7 @@ const Index = () => {
               <CardContent className="space-y-3 sm:space-y-4">
                 <div className="flex items-center justify-between p-4 sm:p-3 bg-gradient-to-r from-primary/20 to-primary/5 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl sm:text-2xl">⭐</span>
+                    <span className="text-3xl sm:text-2xl">{player1Emoji}</span>
                     <span className="font-semibold text-lg sm:text-base">{playerStarName}</span>
                   </div>
                   <Badge className="text-xl sm:text-lg px-4 py-1.5 sm:px-3 sm:py-1 bg-primary">{stats.star}</Badge>
@@ -276,7 +306,7 @@ const Index = () => {
                 
                 <div className="flex items-center justify-between p-4 sm:p-3 bg-gradient-to-r from-secondary/20 to-secondary/5 rounded-lg">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl sm:text-2xl">🌙</span>
+                    <span className="text-3xl sm:text-2xl">{player2Emoji}</span>
                     <span className="font-semibold text-lg sm:text-base">{playerMoonName}</span>
                   </div>
                   <Badge className="text-xl sm:text-lg px-4 py-1.5 sm:px-3 sm:py-1 bg-secondary">{stats.moon}</Badge>
@@ -302,7 +332,7 @@ const Index = () => {
               <CardContent className="space-y-4 text-base sm:text-sm">
                 <div className="flex gap-3">
                   <Badge className="bg-primary shrink-0 h-7 w-7 flex items-center justify-center text-base sm:text-sm">1</Badge>
-                  <p>Игроки ходят по очереди, ставя свой символ (⭐ или 🌙) в пустую клетку</p>
+                  <p>Игроки ходят по очереди, ставя свой символ ({player1Emoji} или {player2Emoji}) в пустую клетку</p>
                 </div>
                 <div className="flex gap-3">
                   <Badge className="bg-secondary shrink-0 h-7 w-7 flex items-center justify-center text-base sm:text-sm">2</Badge>
