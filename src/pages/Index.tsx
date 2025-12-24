@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,19 +18,57 @@ interface GameStats {
 
 const Index = () => {
   const [gameStarted, setGameStarted] = useState(false);
-  const [playerStarName, setPlayerStarName] = useState('Игрок 1');
-  const [playerMoonName, setPlayerMoonName] = useState('Игрок 2');
+  const [playerStarName, setPlayerStarName] = useState(() => {
+    return localStorage.getItem('player1Name') || 'Игрок 1';
+  });
+  const [playerMoonName, setPlayerMoonName] = useState(() => {
+    return localStorage.getItem('player2Name') || 'Игрок 2';
+  });
   const [board, setBoard] = useState<Board>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>('star');
   const [winner, setWinner] = useState<Player | 'draw' | null>(null);
   const [winningLine, setWinningLine] = useState<number[]>([]);
-  const [stats, setStats] = useState<GameStats>({ star: 0, moon: 0, draws: 0 });
+  const [stats, setStats] = useState<GameStats>(() => {
+    const saved = localStorage.getItem('gameStats');
+    return saved ? JSON.parse(saved) : { star: 0, moon: 0, draws: 0 };
+  });
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [player1Emoji, setPlayer1Emoji] = useState('⭐');
-  const [player2Emoji, setPlayer2Emoji] = useState('🌙');
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('soundEnabled');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+  const [player1Emoji, setPlayer1Emoji] = useState(() => {
+    return localStorage.getItem('player1Emoji') || '⭐';
+  });
+  const [player2Emoji, setPlayer2Emoji] = useState(() => {
+    return localStorage.getItem('player2Emoji') || '🌙';
+  });
 
   const emojiOptions = ['⭐', '🌙', '🔥', '💎', '🎯', '⚡', '🌈', '🦄', '🐉', '👑', '🎮', '🚀', '💫', '🌟', '✨', '🎨', '🎭', '🎪', '🎲', '🏆'];
+
+  useEffect(() => {
+    localStorage.setItem('player1Name', playerStarName);
+  }, [playerStarName]);
+
+  useEffect(() => {
+    localStorage.setItem('player2Name', playerMoonName);
+  }, [playerMoonName]);
+
+  useEffect(() => {
+    localStorage.setItem('player1Emoji', player1Emoji);
+  }, [player1Emoji]);
+
+  useEffect(() => {
+    localStorage.setItem('player2Emoji', player2Emoji);
+  }, [player2Emoji]);
+
+  useEffect(() => {
+    localStorage.setItem('soundEnabled', JSON.stringify(soundEnabled));
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('gameStats', JSON.stringify(stats));
+  }, [stats]);
 
   const playSound = (type: 'move' | 'win' | 'draw') => {
     if (!soundEnabled) return;
