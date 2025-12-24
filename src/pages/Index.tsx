@@ -96,41 +96,41 @@ const Index = () => {
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-background via-background to-purple-950/20">
-        <Card className="w-full max-w-md animate-fade-in border-2 border-primary/20 bg-card/95 backdrop-blur">
-          <CardHeader className="text-center">
-            <div className="text-6xl mb-4 animate-bounce-in">⭐🌙</div>
-            <CardTitle className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+      <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-background via-background to-purple-950/20">
+        <Card className="w-full max-w-lg animate-fade-in border-2 border-primary/20 bg-card/95 backdrop-blur">
+          <CardHeader className="text-center space-y-4 sm:space-y-6">
+            <div className="text-7xl sm:text-8xl mb-4 animate-bounce-in">⭐🌙</div>
+            <CardTitle className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
               Крестики-нолики
             </CardTitle>
-            <CardDescription className="text-lg">Введите имена игроков</CardDescription>
+            <CardDescription className="text-xl sm:text-2xl">Введите имена игроков</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold flex items-center gap-2">
-                <span className="text-2xl">⭐</span> Игрок 1
+          <CardContent className="space-y-8">
+            <div className="space-y-3">
+              <label className="text-lg sm:text-xl font-semibold flex items-center gap-3">
+                <span className="text-3xl sm:text-4xl">⭐</span> Игрок 1
               </label>
               <Input
                 value={playerStarName}
                 onChange={(e) => setPlayerStarName(e.target.value)}
                 placeholder="Имя первого игрока"
-                className="text-lg border-primary/30 focus:border-primary"
+                className="text-xl sm:text-2xl h-14 sm:h-16 border-primary/30 focus:border-primary"
               />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold flex items-center gap-2">
-                <span className="text-2xl">🌙</span> Игрок 2
+            <div className="space-y-3">
+              <label className="text-lg sm:text-xl font-semibold flex items-center gap-3">
+                <span className="text-3xl sm:text-4xl">🌙</span> Игрок 2
               </label>
               <Input
                 value={playerMoonName}
                 onChange={(e) => setPlayerMoonName(e.target.value)}
                 placeholder="Имя второго игрока"
-                className="text-lg border-secondary/30 focus:border-secondary"
+                className="text-xl sm:text-2xl h-14 sm:h-16 border-secondary/30 focus:border-secondary"
               />
             </div>
             <Button 
               onClick={startNewGame} 
-              className="w-full text-lg h-12 bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 transition-all"
+              className="w-full text-xl sm:text-2xl h-16 sm:h-20 bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 transition-all"
               disabled={!playerStarName.trim() || !playerMoonName.trim()}
             >
               Начать игру
@@ -142,44 +142,44 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-background via-background to-purple-950/20">
+    <div className="min-h-screen p-3 sm:p-4 bg-gradient-to-br from-background via-background to-purple-950/20">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8 animate-fade-in">
-          <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+        <div className="text-center mb-6 sm:mb-8 animate-fade-in">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-2 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             Крестики-нолики
           </h1>
-          <p className="text-muted-foreground">⭐ {playerStarName} vs {playerMoonName} 🌙</p>
+          <p className="text-lg sm:text-xl text-muted-foreground">⭐ {playerStarName} vs {playerMoonName} 🌙</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-4 sm:gap-6">
           <div className="lg:col-span-2">
             <Card className="border-2 border-primary/20 bg-card/95 backdrop-blur">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-3">
-                    <span className="text-4xl animate-bounce-in">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <CardTitle className="flex items-center gap-3 text-xl sm:text-2xl">
+                    <span className="text-5xl sm:text-6xl animate-bounce-in">
                       {getPlayerSymbol(currentPlayer)}
                     </span>
                     <span>Ход: {getCurrentPlayerName()}</span>
                   </CardTitle>
-                  <Button onClick={changeNames} variant="outline" size="sm">
-                    <Icon name="Settings" className="mr-2" size={16} />
-                    Сменить игроков
+                  <Button onClick={changeNames} variant="outline" size="sm" className="text-base sm:text-sm h-10 sm:h-9">
+                    <Icon name="Settings" className="mr-2" size={18} />
+                    Сменить
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-3 gap-3 max-w-md mx-auto">
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 max-w-md mx-auto">
                   {board.map((cell, index) => (
                     <button
                       key={index}
                       onClick={() => handleCellClick(index)}
                       disabled={!!cell || !!winner}
                       className={`
-                        aspect-square rounded-2xl text-6xl font-bold
+                        aspect-square rounded-xl sm:rounded-2xl text-6xl sm:text-7xl font-bold
                         transition-all duration-200
                         ${cell ? 'bg-gradient-to-br from-primary/20 to-secondary/20' : 'bg-muted hover:bg-muted/70'}
-                        ${!cell && !winner ? 'hover:scale-105 cursor-pointer' : ''}
+                        ${!cell && !winner ? 'hover:scale-105 cursor-pointer active:scale-95' : ''}
                         ${winningLine.includes(index) ? 'animate-winner-celebration bg-gradient-to-br from-primary to-secondary' : ''}
                         ${cell ? 'animate-bounce-in' : ''}
                         border-2 border-border
@@ -191,8 +191,8 @@ const Index = () => {
                 </div>
                 
                 <div className="flex gap-3 justify-center mt-6">
-                  <Button onClick={resetGame} variant="outline" className="gap-2">
-                    <Icon name="RotateCcw" size={18} />
+                  <Button onClick={resetGame} variant="outline" className="gap-2 h-12 sm:h-10 text-lg sm:text-base px-6">
+                    <Icon name="RotateCcw" size={20} />
                     Новая игра
                   </Button>
                 </div>
@@ -200,59 +200,59 @@ const Index = () => {
             </Card>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <Card className="border-2 border-primary/20 bg-card/95 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="Trophy" size={24} className="text-accent" />
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                  <Icon name="Trophy" size={28} className="text-accent" />
                   Статистика
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-primary/20 to-primary/5 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">⭐</span>
-                    <span className="font-semibold">{playerStarName}</span>
+              <CardContent className="space-y-3 sm:space-y-4">
+                <div className="flex items-center justify-between p-4 sm:p-3 bg-gradient-to-r from-primary/20 to-primary/5 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl sm:text-2xl">⭐</span>
+                    <span className="font-semibold text-lg sm:text-base">{playerStarName}</span>
                   </div>
-                  <Badge className="text-lg px-3 py-1 bg-primary">{stats.star}</Badge>
+                  <Badge className="text-xl sm:text-lg px-4 py-1.5 sm:px-3 sm:py-1 bg-primary">{stats.star}</Badge>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-secondary/20 to-secondary/5 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl">🌙</span>
-                    <span className="font-semibold">{playerMoonName}</span>
+                <div className="flex items-center justify-between p-4 sm:p-3 bg-gradient-to-r from-secondary/20 to-secondary/5 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl sm:text-2xl">🌙</span>
+                    <span className="font-semibold text-lg sm:text-base">{playerMoonName}</span>
                   </div>
-                  <Badge className="text-lg px-3 py-1 bg-secondary">{stats.moon}</Badge>
+                  <Badge className="text-xl sm:text-lg px-4 py-1.5 sm:px-3 sm:py-1 bg-secondary">{stats.moon}</Badge>
                 </div>
                 
-                <div className="flex items-center justify-between p-3 bg-gradient-to-r from-muted/50 to-muted/20 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Handshake" size={20} />
-                    <span className="font-semibold">Ничья</span>
+                <div className="flex items-center justify-between p-4 sm:p-3 bg-gradient-to-r from-muted/50 to-muted/20 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Icon name="Handshake" size={24} />
+                    <span className="font-semibold text-lg sm:text-base">Ничья</span>
                   </div>
-                  <Badge variant="outline" className="text-lg px-3 py-1">{stats.draws}</Badge>
+                  <Badge variant="outline" className="text-xl sm:text-lg px-4 py-1.5 sm:px-3 sm:py-1">{stats.draws}</Badge>
                 </div>
               </CardContent>
             </Card>
 
             <Card className="border-2 border-primary/20 bg-card/95 backdrop-blur">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Icon name="BookOpen" size={24} className="text-accent" />
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                  <Icon name="BookOpen" size={28} className="text-accent" />
                   Правила игры
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm">
+              <CardContent className="space-y-4 text-base sm:text-sm">
                 <div className="flex gap-3">
-                  <Badge className="bg-primary shrink-0">1</Badge>
+                  <Badge className="bg-primary shrink-0 h-7 w-7 flex items-center justify-center text-base sm:text-sm">1</Badge>
                   <p>Игроки ходят по очереди, ставя свой символ (⭐ или 🌙) в пустую клетку</p>
                 </div>
                 <div className="flex gap-3">
-                  <Badge className="bg-secondary shrink-0">2</Badge>
+                  <Badge className="bg-secondary shrink-0 h-7 w-7 flex items-center justify-center text-base sm:text-sm">2</Badge>
                   <p>Побеждает тот, кто первым выстроит 3 своих символа в ряд по горизонтали, вертикали или диагонали</p>
                 </div>
                 <div className="flex gap-3">
-                  <Badge className="bg-accent shrink-0">3</Badge>
+                  <Badge className="bg-accent shrink-0 h-7 w-7 flex items-center justify-center text-base sm:text-sm">3</Badge>
                   <p>Если все клетки заполнены и никто не выиграл — объявляется ничья</p>
                 </div>
               </CardContent>
@@ -262,34 +262,34 @@ const Index = () => {
       </div>
 
       <Dialog open={showWinnerDialog} onOpenChange={setShowWinnerDialog}>
-        <DialogContent className="sm:max-w-md border-2 border-primary/30 bg-gradient-to-br from-card to-primary/10">
+        <DialogContent className="sm:max-w-md border-2 border-primary/30 bg-gradient-to-br from-card to-primary/10 w-[90vw] max-w-lg">
           <DialogHeader>
-            <DialogTitle className="text-center text-3xl">
+            <DialogTitle className="text-center text-3xl sm:text-4xl">
               {winner === 'draw' ? (
-                <div className="space-y-4">
-                  <div className="text-6xl animate-bounce-in">🤝</div>
-                  <div className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <div className="space-y-6">
+                  <div className="text-8xl sm:text-9xl animate-bounce-in">🤝</div>
+                  <div className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-4xl sm:text-3xl">
                     Ничья!
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  <div className="text-7xl animate-winner-celebration">
+                <div className="space-y-6">
+                  <div className="text-9xl sm:text-8xl animate-winner-celebration">
                     {winner && getPlayerSymbol(winner)}
                   </div>
-                  <div className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                  <div className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent text-3xl sm:text-3xl">
                     {winner === 'star' ? playerStarName : playerMoonName} победил!
                   </div>
                 </div>
               )}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex gap-3 mt-4">
-            <Button onClick={resetGame} className="flex-1 bg-gradient-to-r from-primary to-secondary">
-              <Icon name="RotateCcw" className="mr-2" size={18} />
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <Button onClick={resetGame} className="flex-1 bg-gradient-to-r from-primary to-secondary h-14 sm:h-10 text-lg sm:text-base">
+              <Icon name="RotateCcw" className="mr-2" size={22} />
               Новая игра
             </Button>
-            <Button onClick={() => setShowWinnerDialog(false)} variant="outline" className="flex-1">
+            <Button onClick={() => setShowWinnerDialog(false)} variant="outline" className="flex-1 h-14 sm:h-10 text-lg sm:text-base">
               Закрыть
             </Button>
           </div>
